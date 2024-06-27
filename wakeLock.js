@@ -1,17 +1,30 @@
 let wakeLock = null;
+let retryCount = 0;
+const maxRetries = 3;
 
 async function requestWakeLock() {
   try {
     wakeLock = await navigator.wakeLock.request('screen');
-    wakeLock.addEventListener('release', () => {
-      console.log('Wake Lock was released');
-      updateWakeLockStatus(false);
-    });
+    wakeLock.addEventListener('release', handleWakeLockRelease);
     console.log('Wake Lock is active');
     updateWakeLockStatus(true);
+    retryCount = 0; // Reset retry count on successful acquisition
   } catch (err) {
     console.error(`${err.name}, ${err.message}`);
     updateWakeLockStatus(false, `Error - ${err.message}`);
+    if (retryCount < maxRetries) {
+      retryCount++;
+      setTimeout(requestWakeLock, 3000); // Retry after 3 seconds
+    }
+  }
+}
+
+function handleWakeLockRelease() {
+  console.log('Wake Lock was released');
+  updateWakeLockStatus(false);
+  if (retryCount < maxRetries) {
+    retryCount++;
+    setTimeout(requestWakeLock, 3000); // Retry after 3 seconds
   }
 }
 
