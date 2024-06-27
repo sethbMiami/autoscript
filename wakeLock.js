@@ -3,6 +3,11 @@ let retryCount = 0;
 const maxRetries = 3;
 
 async function requestWakeLock() {
+  if (document.visibilityState !== 'visible') {
+    console.log('Page is not visible, cannot request Wake Lock');
+    return;
+  }
+
   try {
     wakeLock = await navigator.wakeLock.request('screen');
     wakeLock.addEventListener('release', handleWakeLockRelease);
@@ -41,6 +46,13 @@ function updateWakeLockStatus(isActive, errorMessage = '') {
   }
 }
 
+function handleVisibilityChange() {
+  if (document.visibilityState === 'visible' && !wakeLock) {
+    requestWakeLock();
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   requestWakeLock();
+  document.addEventListener('visibilitychange', handleVisibilityChange);
 });
