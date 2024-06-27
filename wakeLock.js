@@ -1,6 +1,6 @@
 let wakeLock = null;
 let retryCount = 0;
-const maxRetries = 3;
+const maxRetries = 10;
 
 async function requestWakeLock() {
   if (document.visibilityState !== 'visible') {
