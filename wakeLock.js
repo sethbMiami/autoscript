@@ -49,10 +49,14 @@ function updateWakeLockStatus(isActive, errorMessage = '') {
 function handleVisibilityChange() {
   if (document.visibilityState === 'visible' && !wakeLock) {
     requestWakeLock();
+  } else if (document.visibilityState !== 'visible' && wakeLock) {
+    wakeLock.release();
+    wakeLock = null;
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   requestWakeLock();
-  document.addEventListener('visibilitychange', handleVisibilityChange);
 });
+
+document.addEventListener('visibilitychange', handleVisibilityChange);
