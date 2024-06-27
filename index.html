@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>auto clicker</title>
-    <script src="auto_clicker.js"></script>
+    <script src="wakeLock.js" defer></script>
     <style>
         /* Add your CSS styles here */
         body {
@@ -14,18 +14,24 @@
         h1 {
             color: #333;
         }
+        .status-active {
+            background-color: green;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
 
-        button.clicked {
-          background-color: #ffcc00; /* Change to a different color when clicked */
-          transition: background-color 0.3s ease;
+        .status-inactive {
+            background-color: red;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
         }
     </style>
 </head>
 <body>
-    <h1>Running autoClicker script</h1>
+    <h1>Running script</h1>
     <p>Using wakeLock API</p>
-    <!-- Add more content here -->
-    <p id="click-count">Clicks: 0</p> <!-- Display the click count here -->
-    <button id="my-button">Click Effect</button>
+    <p id="wake-lock-status" class="status-inactive">Wake Lock Status: Inactive</p> <!-- Display Wake Lock status here -->
 </body>
 </html>
